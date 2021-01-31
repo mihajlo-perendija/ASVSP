@@ -1,4 +1,4 @@
-# University project for a subject "Architectures of Big Data Systems"
+# Architectures of Big Data Systems project
 
 Author: Mihajlo Perendija
 
@@ -15,12 +15,12 @@ Data used in this project consists of:
 - [Police Stations](https://data.cityofchicago.org/Public-Safety/Police-Stations/z8bn-74gv) - Consists of data about police stations - located at *consumers/map/Police_Stations.csv*
 - [Boundaries - Police Districts](https://data.cityofchicago.org/Public-Safety/Boundaries-Police-Districts-current-/fthy-xz3r) - Exported as geojson, represents police district boundaries - located at *consumers/map/Boundaries - Police Districts (current).geojson*
 - Census Data By Community Area - Found in pdf form, transformed to csv, consists of data about population in all community areas in Chicago - located at *data/Census_Data_By_Community_Area.csv*
-- Not used in project but available in repo: Police Beats, Census Data - Socioeconomics data
+- Not used in project but available in repositry: Police Beats, Census Data - Socioeconomics data
 
 Preparation of data:
-After downloading "Crimes - 2001 to Present" dataset it should be split in two files: 
+After downloading *"Crimes - 2001 to Present"* dataset it should be split in two files: 
 - data_batch.csv - Consisting of the majority of the data from the dataset as it is used in batch processing of historical data. This file should be placed in *data* folder.
-- data_realtime.csv - Consisting of the last, small part of the dataset as it will be used to generate "new" data for real-time processing. This file should be placed in *producer* folder. Also, it should be cleaned of Null values for locations.
+- data_realtime.csv - Consisting of the last, small part of the dataset as it will be used to generate "new" data for real-time processing. This file should be placed in *producer* folder. Also, it should be cleaned of empty values for locations.
 
 # Architecture
 
@@ -43,7 +43,7 @@ These are the steps to run this project:
 3. Start docker containers with docker-compose command - docker-compose up 
 
 To be able to run analytics jobs in spark you will need to place relevant data in HDFS, to do this follow these commands:
-1. Position yourself in the root folder and open the terminal of your choice and type the next commands.
+1. Position yourself in the root folder, open the terminal of your choice and type the next commands.
 2. docker cp /data hadoop-namenode:/home
 3. docker exec -it hadoop-namenode bash
 4. cd home
@@ -58,5 +58,8 @@ To startup real-time processing do the following:
 <br> *Note: As retention periods of Kafka topics have not been implemented as planned, the consumer application should be stopped after the first startup and started again, this will be fixed in the next version.*
 
 To run batch jobs and visualize results do the following:
-1. Go to the localhost:8282 and run the analytics_dag. *Note: Keep in mind that this can take a long time depending on your computer resources.*
-2. After all of the jobs, or some of the analytic ones, are completed, go to the localhost:3001 to use the Metabase app to see and visualize the results stored in MongoDB.
+1. Go to the localhost:8282 to open Apache Airflow UI. 
+2. Run the analytics_dag and monitor the progress of jobs in the DAG. *Note: Keep in mind that this can take a long time depending on your computer resources.*
+3. After all of the jobs, or some of the analytic ones, are completed, go to the localhost:3001 to open the Metabase app to see and visualize the results stored in MongoDB.
+4. You can also view the logs of spark jobs in airflow if you don't wish to set up the Metabase app or use Mongo Express (localhost:8085) to see the data in MongoDB.
+
